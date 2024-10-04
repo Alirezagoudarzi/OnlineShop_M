@@ -44,13 +44,26 @@ class UserChangeForm(forms.ModelForm):
         fields=['email','phone_number','full_name','password','last_login']
 
 
-
-
-
-
-
 class UserRegistrationForm(forms.Form):
     email=forms.EmailField(label='      Email',required=True)
     full_name=forms.CharField(label='  Full Name', max_length=100, required=True)
     phone=forms.CharField(label='      Phone',max_length=11, required=True)
     password=forms.CharField(label='   Password',widget=forms.PasswordInput,required=True)
+
+    def clean_email(self):
+        email=self.cleaned_data['email']
+        user=User.objects.filter(email=email).exists()
+        if user:
+            raise ValidationError('This email already exists.')
+        return email
+    
+    def clean_phone(self):
+        phone=self.cleaned_data['phone']
+        user=User.objects.filter(phone_number=phone).exists()
+        if user:
+            raise ValidationError('This phone number already exists.')
+        return phone
+
+
+class VerifyCodeForm(forms.Form):
+    code=forms.IntegerField()

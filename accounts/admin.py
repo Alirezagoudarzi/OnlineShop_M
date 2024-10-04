@@ -22,7 +22,7 @@ class UserAdmin(BaseUserAdmin):
         ('new user',{'fields':('email','phone_number','full_name','password1','password2')}),
     )
 
-
+ 
     list_display=('email','phone_number','full_name','is_admin')
     list_filter=('is_admin',)
     search_fields=('email','full_name')
